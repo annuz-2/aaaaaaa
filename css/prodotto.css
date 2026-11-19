@@ -1,0 +1,668 @@
+/* prodotto.css – la pagina prodotto degli occhiali Sguardi, in stile "pagina Apple" */
+
+:root {
+    --nero: #000;
+    --grigio-scuro: #1d1d1f;
+    --grigio: #6e6e73;
+    --grigio-chiaro: #86868b;
+    --sfondo-chiaro: #f5f5f7;
+    --bianco: #fff;
+    --blu: #0071e3;
+    --blu-scuro: #0062c4;
+    --font: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    background: var(--nero);
+    color: var(--grigio-scuro);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+button { font: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+.contenuto {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 22px;
+}
+
+.sezione-chiara { background: var(--sfondo-chiaro); color: var(--grigio-scuro); }
+.sezione-scura { background: var(--nero); color: #f5f5f7; }
+
+
+/* ===== la barra in alto ===== */
+.barra {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(22, 22, 23, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.barra-dentro {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 22px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+.barra-nome {
+    color: #f5f5f7;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    margin-right: auto;
+}
+.barra-link { display: flex; gap: 22px; }
+.barra-link a {
+    color: rgba(245, 245, 247, 0.8);
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.barra-link a:hover { color: #fff; }
+
+.pillola {
+    background: var(--blu);
+    color: #fff;
+    border: 0;
+    border-radius: 980px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.2s;
+}
+.pillola:hover { background: var(--blu-scuro); }
+.pillola:active { transform: scale(0.97); }
+.pillola.grande { padding: 12px 24px; font-size: 17px; font-weight: 500; }
+
+.link-freccia {
+    color: var(--blu);
+    font-size: 17px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.link-freccia::after { content: " ›"; }
+.link-freccia:hover { text-decoration: underline; }
+
+@media (max-width: 833px) {
+    .barra-link { display: none; }
+}
+
+
+/* ===== testi comuni ===== */
+.occhiello {
+    margin: 0 0 8px;
+    font-size: 21px;
+    font-weight: 600;
+    color: #f5a35b;
+    letter-spacing: -0.01em;
+}
+.occhiello.scuro { color: #bf4800; }
+.titolo-sezione {
+    margin: 0 0 40px;
+    font-size: clamp(40px, 6.5vw, 80px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+.titolo-grande {
+    margin: 0 0 16px;
+    font-size: clamp(36px, 5.2vw, 64px);
+    line-height: 1.06;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+.testo {
+    margin: 0;
+    font-size: clamp(17px, 1.6vw, 21px);
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--grigio-chiaro);
+    max-width: 30em;
+}
+.nota { font-size: 12px; line-height: 1.5; color: var(--grigio-chiaro); max-width: 36em; }
+.nota.scura { color: var(--grigio); }
+
+
+/* ===== il palco ===== */
+.palco {
+    position: relative;
+    height: 700vh;          /* più è alto, più lento è il racconto */
+    background: var(--sfondo-chiaro);
+}
+.ancora-esploso { position: absolute; top: 47%; }
+.palco-fisso {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+}
+.palco-tela {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+.palco-tela.pronta { opacity: 1; }
+.palco-attesa {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    color: var(--grigio-chiaro);
+    font-size: 14px;
+}
+
+.palco-testo {
+    position: absolute;
+    color: var(--grigio-scuro);
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity, transform;
+}
+.pos-eroe {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding-top: 9vh;
+    text-align: center;
+}
+.titolo-eroe {
+    margin: 0;
+    font-size: clamp(64px, 13vw, 168px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    background: linear-gradient(180deg, #1d1d1f 30%, #6e6e73 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.sottotitolo {
+    margin: 12px 0 0;
+    font-size: clamp(21px, 2.6vw, 32px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.scorri {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5vh;
+    margin: 0;
+    font-size: 13px;
+    color: var(--grigio-chiaro);
+    animation: respiro 2.4s ease-in-out infinite;
+}
+.scorri::after { content: ""; display: block; width: 1px; height: 28px; margin: 10px auto 0; background: currentColor; }
+@keyframes respiro { 50% { opacity: 0.35; transform: translateY(4px); } }
+
+.pos-sinistra { left: max(22px, calc(50% - 550px)); top: 50%; max-width: 420px; }
+.pos-alto { left: 0; right: 0; top: 13vh; text-align: center; padding: 0 22px; }
+.pos-alto .testo { margin: 0 auto; }
+.palco .testo { color: var(--grigio); }
+.palco .occhiello { color: #bf4800; }
+.pos-basso { left: 0; right: 0; bottom: 8vh; text-align: center; padding: 0 22px; }
+
+.palco-colore {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 0;
+    padding: 8px 16px;
+    border-radius: 980px;
+    background: rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(10px);
+    font-size: 17px;
+    font-weight: 500;
+}
+.palco-colore-pallino {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+    transition: background-color 0.4s;
+}
+
+/* le etichette dell'esploso: un punto, una linea e il nome */
+.palco-etichette { position: absolute; inset: 0; pointer-events: none; }
+.etichetta {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    will-change: transform, opacity;
+}
+.etichetta::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1d1d1f;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.etichetta-linea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 48px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.45);
+}
+.etichetta-nome {
+    position: absolute;
+    left: 56px;
+    top: -10px;
+    white-space: nowrap;
+    color: var(--grigio-scuro);
+    font-size: 14px;
+    font-weight: 500;
+}
+.etichetta.a-sinistra .etichetta-linea { left: -48px; }
+.etichetta.a-sinistra .etichetta-nome { left: auto; right: 56px; }
+
+@media (max-width: 833px) {
+    .palco { height: 600vh; }
+    .pos-sinistra { left: 22px; right: 22px; top: auto; bottom: 7vh; max-width: none; }
+    .pos-eroe { padding-top: 13vh; }
+    .pos-alto { top: 10vh; }
+    .etichetta-nome { font-size: 12px; }
+    .etichetta-linea { width: 24px; }
+    .etichetta-nome { left: 30px; }
+    .etichetta.a-sinistra .etichetta-linea { left: -24px; }
+    .etichetta.a-sinistra .etichetta-nome { right: 30px; }
+}
+
+
+/* ===== i numeri ===== */
+.numeri { padding: 120px 0 40px; }
+.griglia-numeri { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.numero-valore {
+    font-size: clamp(56px, 8vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    background: linear-gradient(90deg, #bf4800, #e5532a 60%, #8a1626);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.numero-unita { font-size: 28px; font-weight: 600; margin-left: 6px; color: #bf4800; }
+.numero p { margin: 8px 0 0; font-size: 17px; line-height: 1.4; font-weight: 500; color: var(--grigio); max-width: 16em; }
+@media (max-width: 733px) {
+    .griglia-numeri { grid-template-columns: 1fr; gap: 28px; }
+}
+
+
+/* ===== i colori ===== */
+.colori { padding: 100px 0 120px; text-align: center; }
+.colori .titolo-sezione { margin-bottom: 32px; }
+.vetrina {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #f5f5f7;
+}
+.vetrina-foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.vetrina-foto.visibile { opacity: 1; }
+.vetrina-attesa {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    color: var(--grigio-chiaro);
+    font-size: 14px;
+    pointer-events: none;
+}
+.vetrina-attesa[hidden] { display: none; }
+.vetrina-angoli {
+    display: inline-flex;
+    gap: 4px;
+    margin: 24px 0 28px;
+    padding: 4px;
+    border-radius: 980px;
+    background: #e8e8ed;
+}
+.vetrina-angoli button {
+    border: 0;
+    background: transparent;
+    padding: 7px 16px;
+    border-radius: 980px;
+    font-size: 14px;
+    color: var(--grigio-scuro);
+}
+.vetrina-angoli button.selected { background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12); }
+
+.vetrina-pallini, .telefono-pallini, .app-pallini { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.pallino {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 0;
+    padding: 0;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15), inset 0 -6px 10px rgba(0, 0, 0, 0.12), inset 0 6px 8px rgba(255, 255, 255, 0.3);
+    outline: 2px solid transparent;
+    outline-offset: 3px;
+    transition: outline-color 0.2s, transform 0.2s;
+}
+.pallino:hover { transform: scale(1.08); }
+.pallino.selected { outline-color: #0071e3; }
+.vetrina-nome { margin: 22px 0 6px; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+.vetrina-testo { margin: 0 auto; max-width: 34em; font-size: 17px; line-height: 1.47; color: var(--grigio); }
+.vetrina-azioni { display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
+
+
+/* ===== la gamma ===== */
+.gamma { background: #fff; padding: 100px 0 120px; }
+.gamma .titolo-sezione { text-align: center; }
+.gamma-griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+.gamma-scheda {
+    border: 0;
+    padding: 0 0 20px;
+    background: var(--sfondo-chiaro);
+    border-radius: 22px;
+    overflow: hidden;
+    text-align: left;
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.gamma-scheda:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); }
+.gamma-scheda .gamma-foto { aspect-ratio: 16 / 10; background: #ececef; }
+.gamma-scheda img { width: 100%; height: 100%; object-fit: cover; }
+.gamma-scheda strong { display: block; margin: 16px 20px 2px; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+.gamma-scheda span { display: block; margin: 0 20px; font-size: 14px; color: var(--grigio); }
+
+
+/* ===== la prova ===== */
+.prova { padding: 140px 0; overflow: hidden; }
+.prova-griglia { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+.prova .titolo-sezione { color: #f5f5f7; }
+.prova .testo { margin-bottom: 32px; }
+.passi { list-style: none; padding: 0; margin: 0 0 36px; display: grid; gap: 14px; }
+.passi li { display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 500; }
+.passi span {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+}
+.prova .nota { margin-top: 22px; }
+
+/* il telefono finto: dentro c'è il render frontale del colore scelto */
+.telefono {
+    justify-self: center;
+    width: min(320px, 80vw);
+    aspect-ratio: 9 / 19.5;
+    border-radius: 54px;
+    padding: 12px;
+    background: linear-gradient(145deg, #3a3a3c, #121214);
+    box-shadow: 0 0 0 1px #4a4a4d, 0 40px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 2px #0a0a0a;
+}
+.telefono-schermo {
+    position: relative;
+    height: 100%;
+    border-radius: 42px;
+    overflow: hidden;
+    background: radial-gradient(120% 70% at 50% 38%, #d9cfc4 0%, #a89a8c 55%, #4a423b 100%);
+}
+.telefono-isola {
+    position: absolute;
+    left: 50%;
+    top: 12px;
+    width: 90px;
+    height: 26px;
+    margin-left: -45px;
+    border-radius: 20px;
+    background: #000;
+    z-index: 2;
+}
+/* l'ovale tratteggiato: "metti qui il viso", come nelle app della fotocamera */
+.telefono-viso {
+    position: absolute;
+    left: 50%;
+    top: 22%;
+    width: 64%;
+    height: 44%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.55);
+}
+.telefono-foto {
+    position: absolute;
+    left: 6%;
+    width: 88%;
+    top: 30%;
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
+    transition: opacity 0.4s;
+}
+.telefono-ui {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 18px 14px 26px;
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+    color: #fff;
+}
+.telefono-nome {
+    position: absolute;
+    left: 50%;
+    top: 52px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 980px;
+    background: rgba(0, 0, 0, 0.35);
+}
+.telefono-pallini { gap: 9px; flex-wrap: nowrap; }
+.telefono-pallini span { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.telefono-pallini span.selected { outline: 2px solid #fff; outline-offset: 2px; }
+.telefono-scatto { width: 56px; height: 56px; border-radius: 50%; border: 4px solid #fff; box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3); background: #fff; background-clip: content-box; padding: 3px; }
+
+@media (max-width: 833px) {
+    .prova { padding: 100px 0; }
+    .prova-griglia { grid-template-columns: 1fr; }
+}
+
+
+/* ===== le misure ===== */
+.misure { padding: 120px 0; }
+.scheda { margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 60px; }
+.scheda div { padding: 20px 0; border-top: 1px solid #d2d2d7; }
+.scheda dt { font-size: 14px; color: var(--grigio); margin-bottom: 6px; }
+.scheda dd { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
+.misure .nota { margin-top: 30px; }
+@media (max-width: 733px) { .scheda { grid-template-columns: 1fr; } }
+
+.piede { background: var(--sfondo-chiaro); border-top: 1px solid #d2d2d7; padding: 20px 0 40px; }
+.piede p { margin: 0; font-size: 12px; color: var(--grigio); }
+.piede a { color: var(--blu); text-decoration: none; }
+
+
+/* ===== l'app della prova virtuale ===== */
+.app {
+    border: 0;
+    padding: 0;
+    width: min(1100px, 94vw);
+    height: min(720px, 90vh);
+    max-width: none;
+    max-height: none;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+}
+.app::backdrop { background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px); }
+@media (max-width: 700px), (max-height: 520px) {
+    .app { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; }
+}
+.app-schermo { position: relative; width: 100%; height: 100%; overflow: hidden; }
+
+/* lo specchio è più grande dello schermo (come object-fit: cover) e girato a specchio */
+.app-specchio { position: absolute; left: 0; top: 0; transform: scaleX(-1); }
+.app-video, .app-specchio canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.app-video { object-fit: fill; }
+/* un'ombra morbida sotto gli occhiali: li fa sembrare appoggiati sul viso */
+.app-specchio canvas { filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.3)); }
+
+.app-flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.app-flash.via { animation: flash 0.5s ease-out; }
+@keyframes flash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
+
+.app-stato {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(80%, 360px);
+    margin: 0;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: rgba(30, 30, 32, 0.7);
+    backdrop-filter: blur(16px);
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.4;
+}
+.app-stato[hidden] { display: none; }
+
+.app-testa {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: max(14px, env(safe-area-inset-top)) 16px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(rgba(0, 0, 0, 0.45), transparent);
+}
+.app-tondo {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(40, 40, 42, 0.6);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    font-size: 15px;
+}
+.app-vuoto { visibility: hidden; }
+.app-titolo { display: grid; justify-items: center; font-size: 15px; line-height: 1.2; }
+.app-colore-nome { font-size: 12px; color: rgba(255, 255, 255, 0.75); }
+
+.app-fondo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 40px 16px max(22px, env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+    display: grid;
+    gap: 18px;
+}
+.app-pallini { flex-wrap: nowrap; overflow-x: auto; padding: 6px; scrollbar-width: none; }
+.app-pallini::-webkit-scrollbar { display: none; }
+.app-pallini .pallino { flex: 0 0 auto; width: 36px; height: 36px; outline-color: transparent; }
+.app-pallini .pallino.selected { outline-color: #fff; }
+.app-riga { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.app-scatta {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    background: transparent;
+    padding: 4px;
+}
+.app-scatta span { display: block; width: 100%; height: 100%; border-radius: 50%; background: #fff; transition: transform 0.15s; }
+.app-scatta:active span { transform: scale(0.88); }
+.app-scatta:disabled { opacity: 0.4; cursor: default; }
+.app-ultima {
+    justify-self: start;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.12) center / cover no-repeat;
+}
+.app-ultima:disabled { opacity: 0; cursor: default; }
+.app-misura { justify-self: end; display: grid; justify-items: end; gap: 4px; font-size: 11px; color: rgba(255, 255, 255, 0.8); }
+.app-misura input { width: min(130px, 26vw); accent-color: #fff; }
+
+.app-anteprima {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(20px);
+    animation: sale 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.app-anteprima[hidden] { display: none; }
+@keyframes sale { from { opacity: 0; transform: translateY(24px); } }
+.app-anteprima-foto {
+    align-self: center;
+    justify-self: center;
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 40px);
+    margin-top: 24px;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+.app-anteprima-fondo { padding: 18px 16px max(22px, env(safe-area-inset-bottom)); display: grid; justify-items: center; gap: 12px; text-align: center; }
+.app-anteprima-riga { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.app-bottone {
+    border: 0;
+    border-radius: 980px;
+    padding: 9px 18px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 15px;
+    text-decoration: none;
+}
+.app-bottone:hover { background: rgba(255, 255, 255, 0.22); }
+.app-altri p { margin: 0 0 10px; font-size: 13px; color: rgba(255, 255, 255, 0.7); max-width: 26em; }
+.app-avviso { margin: 0; min-height: 1em; font-size: 13px; color: #8fd18f; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .scorri { animation: none; }
+}
